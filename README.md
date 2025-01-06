@@ -277,7 +277,7 @@ Bash command: ```grep "Eukaryota" out.eggnog/non_redundant_PROKGAP_protein_eggNO
 
 Bash command: ```seqtk subseq out.eggnog/non_redundant_PROKGAP_protein.faa eggNOG_eukaryotes_OG_prokGAP.id > out.eggnog/out.eggnog/eggnog_eukaryote_OG_proteins_prokGAP.faa```
 
-### Step7 Diversity and abundance of KEGG Orthologs 
+### Diversity and abundance of KEGG Orthologs 
 
 Description : Protein sequences with KEGG Orthologs (KO) annotations were extracted from the EggNOG outputs and proteins associated with multiple KO identifiers to reduce ambiguous annotations were discarded using an R script. 
 
@@ -313,7 +313,7 @@ Correlation analysis between KOs and Assembly: ```R_scripts/corr_analysis_KOs/co
 
 KOs Venn Diagra: ```R_scripts/KO_Venn_diagram/KO_venn.R```
 
-### Step8 Taxonomic assignments of eukaryotic proteins 
+### Step7 Taxonomic assignments of eukaryotic proteins 
 
 Description : The taxonomic origin of eukaryotic proteins from the four datasets (based on the eggNOG result) were cross-checked against the NCBI protein database. This script should be iterated across pipelines.
 
@@ -345,7 +345,7 @@ Run   : ```taxonomy_abund_mmseqs2.R```
 
 Correlation analysis: ```spearman_corr_test.R```
 
-### step9 aDNA Assessment (PyDamage)
+### step8 aDNA Assessment (PyDamage)
 
 Description: Here we assess aDNA contigs in our assemblies using PyDamage. This process include several subprocesses, bwa, pydamage and kraken2. 
 
