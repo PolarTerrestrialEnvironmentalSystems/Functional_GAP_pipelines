@@ -208,7 +208,7 @@ OUTPUT (respectivel):
 
 Description: Here we extract their respective nucleotides for the gene abundance estimation with salmon. Example for 'redundant_PROKGAP_protein.faa' and should be implemented it on all redundant protein dataset from the pipelines
 
-Bash command: ```grep '^>' out.prodigal/redundant_PROKGAP_protein.faa | cut -c 2- > out.prodigal/non_redundant_PROKGAP_protein_to_pCDS.id```
+Bash command: ```grep '>' out.prodigal/redundant_PROKGAP_protein.faa | cut -c 2- > out.prodigal/non_redundant_PROKGAP_protein_to_pCDS.id```
 
 Bash command: ```seqtk subseq out.prodigal/redundant_PROGAP_pCDS.fna non_redundant_EUKGAP_protein_to_pCDS.id > out.prodigal/non_redundant_PROKGAP_protein_to_pCDS.fna ```
 
