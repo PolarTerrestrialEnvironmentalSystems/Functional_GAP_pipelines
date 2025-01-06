@@ -186,9 +186,9 @@ Here, prodigal IDs should be fixed in these files using ```sed``` script before 
 
 bash command : 
 
-```sed -e "s/ //g" < out.tiara/out.prodigal/redundant_preclass_prokGAP_pCDS.fna```
+```sed -i "s/ //g" out.tiara/out.prodigal/redundant_preclass_prokGAP_pCDS.fna```
 
-```sed -e "s/ //g" < out.tiara/out.prodigal/redundant_preclass_prokGAP_protein.faa```
+```sed -i "s/ //g" out.tiara/out.prodigal/redundant_preclass_prokGAP_protein.faa```
 
 ### Step4 Functional Gene/Protein Catalog 
 
