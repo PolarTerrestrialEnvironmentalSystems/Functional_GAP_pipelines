@@ -67,13 +67,13 @@ Input File: Raw data from the data source, "Barbara's upload link"
 
 Run   : ```step1_preprocessing.sl```
 
-### Step2 Taxonomic assignment with Kraken2 
+### Step1.2 Taxonomic assignment with Kraken2 
 
 Description : The paired and merged reads from step1_preprocessing.sl were taxonomically classified using Kraken2 against the nt database at a confidence threshold of 0.8 and a k-mer minimizer of 31nt.
 
 Run   : ```step1.2_kraken_nt22.sl```
 
-### Step3 Metagenome assembly
+### Step2 Metagenome assembly
 
 Description : To improve the assembly quality, processed reads, then, underwent error-correction using tadpole from BBtools (v38.87, (Bushnell, 2014). Following this, quality checked error-corrected merged reads and paired reads from the samples are assembled into contigs using MEGAHIT (v1.2.9).
 
@@ -96,7 +96,7 @@ Once getting report.tsv file, n50, largest contig, and number of contigs columns
 Input : ```R_script/assembly/lake_lama_quast_report.csv```
 Run : ```R_script/assembly/assembly_stats_plot.R```
 
-### Step4 Gene Prediction
+### Step3 Gene Prediction
 
 **prokGAP:**
 
@@ -190,7 +190,7 @@ bash command :
 
 ```sed -e "s/ //g" < out.tiara/out.prodigal/redundant_preclass_prokGAP_protein.faa```
 
-### Step5 Functional Gene/Protein Catalog 
+### Step4 Functional Gene/Protein Catalog 
 
 Description : Functional redundant catalogs were generated from the prediction pipelines and present the functional diversity on gene and protein level aggregated from all sediment core samples. 
 
@@ -212,7 +212,7 @@ Bash command: ```grep '^>' out.prodigal/redundant_PROKGAP_protein.faa | cut -c 2
 
 Bash command: ```seqtk subseq out.prodigal/redundant_PROGAP_pCDS.fna non_redundant_EUKGAP_protein_to_pCDS.id > out.prodigal/non_redundant_PROKGAP_protein_to_pCDS.fna ```
 
-### Step6 Gene Abundance Estimation
+### Step5 Gene Abundance Estimation
 
 Description : Salmon was use for the quality-checked merged and paired reads of the samples to quantify the abundance of each gene in the non-redundant gene catalog 
 
@@ -255,7 +255,7 @@ To visualization the gene abundance figure, see R_script/Gene_catalog.
 
 Run: ```gene_catalog/gene_catalog_visualization.r```
 
-### Step7 Functional annotation with EggNOG
+### Step6 Functional annotation with EggNOG
 
 Description : EggNOG is used to get the functional annotation of the proteins in the non-redundant protein datasets from the pipelines.
 
@@ -277,7 +277,7 @@ Bash command: ```grep "Eukaryota" out.eggnog/non_redundant_PROKGAP_protein_eggNO
 
 Bash command: ```seqtk subseq out.eggnog/non_redundant_PROKGAP_protein.faa eggNOG_eukaryotes_OG_prokGAP.id > out.eggnog/out.eggnog/eggnog_eukaryote_OG_proteins_prokGAP.faa```
 
-### Step8 Diversity and abundance of KEGG Orthologs 
+### Step7 Diversity and abundance of KEGG Orthologs 
 
 Description : Protein sequences with KEGG Orthologs (KO) annotations were extracted from the EggNOG outputs and proteins associated with multiple KO identifiers to reduce ambiguous annotations were discarded using an R script. 
 
@@ -313,7 +313,7 @@ Correlation analysis between KOs and Assembly: ```R_scripts/corr_analysis_KOs/co
 
 KOs Venn Diagra: ```R_scripts/KO_Venn_diagram/KO_venn.R```
 
-### Step9 Taxonomic assignments of eukaryotic proteins 
+### Step8 Taxonomic assignments of eukaryotic proteins 
 
 Description : The taxonomic origin of eukaryotic proteins from the four datasets (based on the eggNOG result) were cross-checked against the NCBI protein database. This script should be iterated across pipelines.
 
@@ -345,7 +345,7 @@ Run   : ```taxonomy_abund_mmseqs2.R```
 
 Correlation analysis: ```spearman_corr_test.R```
 
-### step10 aDNA Assessment (PyDamage)
+### step9 aDNA Assessment (PyDamage)
 
 Description: Here we assess aDNA contigs in our assemblies using PyDamage. This process include several subprocesses, bwa, pydamage and kraken2. 
 
