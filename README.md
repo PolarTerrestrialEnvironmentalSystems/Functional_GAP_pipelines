@@ -116,9 +116,9 @@ bash command : ```cat out.prodigal/*.faa > out.prodigal/redundant_PROKGAP_protei
 
 Here, prodigal IDs should be fixed in these files using ```sed``` script before CD-HIT clustering step.
 
-bash command : ```sed -e "s/ //g" < out.prodigal/redundant_PROKGAP_pCDS.fna ```
+bash command : ```sed -i "s/ //g"  out.prodigal/redundant_PROKGAP_pCDS.fna ```
 
-bash command : ```sed -e "s/ //g" < out.prodigal/redundant_PROKGAP_protein.faa```
+bash command : ```sed -i "s/ //g"  out.prodigal/redundant_PROKGAP_protein.faa```
 
 **eukGAP:**
 
