@@ -4,7 +4,7 @@
 import pandas as pd
 
 #Input_file for the pipeline
-input_file= "prokGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv""
+input_file= "prokGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv"
 # the number should be changed based on the gene catalog size.
 scaling_factor=6568483
 df = pd.read_csv(input_file, sep='\t')
