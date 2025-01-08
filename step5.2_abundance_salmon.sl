@@ -7,7 +7,7 @@
 
 
 # this is a prokGAP input example. This should be changed based on the pipeline.
-OUT_NUCL="out.prodigal/non_redundant_PROGAP_protein_to_pCDS.fna"
+OUT_NUCL="out.prodigal/non_redundant_PROKGAP_protein_to_pCDS.fna"
 
 WORK=${PWD}
 OUTDIR="output"
@@ -30,7 +30,7 @@ cd ${WORK}
 
 
 # Salmon index
-SALMON_INDEX="non_redundant_PROGAP_protein_to_pCDS.index"
+SALMON_INDEX="non_redundant_PROKGAP_protein_to_pCDS.index"
 
 mkdir -p ${OUTDIR}/${OUT_SALMON}
 
