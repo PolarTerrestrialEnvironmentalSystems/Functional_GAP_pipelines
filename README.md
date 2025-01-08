@@ -220,19 +220,19 @@ INDEX FILE INPUTS: (respectively):
 
 ```out.prodigal/non_redundant_PROGAP_protein_to_pCDS.fna, out.metaeuk/non_redundant_EUKGAP_protein_to_pCDS.fna, out.tiara/out.prodigal/non_redundant_preclass_prokGAP_protein_to_pCDS.fna, out.tiara/out.metaeuk/non_redundant_preclass_prokGAP_protein_to_pCDS.fna```
 
-Run : ```step5.1_salmon_index.sl```
-
 Description : Firstly, the gene catalog will be created. 
 
-Run : ```step5.2_abundance_salmon.sl```
+Run : ```step5.1_salmon_index.sl```
 
 Description : Quality checked reads will map to the gene catalog, respectively. 
 
-Run : ```step5.3_salmon_merge.sl```
+Run : ```step5.2_abundance_salmon.sl```
 
 Description : Summing up all merged and read counts using the python script. In that script, there is python_script/sum_up_qc_merge_paired.py which should be in the working directory.
 
 After running the batch and python script, we merge the output from the samples, considering only the 'numreads'  and 'len' column in the outputs instead of TPM (transcripts per million).
+
+Run : ```step5.3_salmon_merge.sl```
 
 Description : Run python_scripts/fix_merge_len.py to fix the 'ProkGAP_all_lake_lama_gene_quant.raw.count.qf' and 'ProkGAP_all_lake_lama_gene_quant.raw.count.len'
 
