@@ -216,26 +216,25 @@ Bash command: ```seqtk subseq out.prodigal/redundant_PROGAP_pCDS.fna non_redunda
 
 Description : Salmon was use for the quality-checked merged and paired reads of the samples to quantify the abundance of each gene in the non-redundant gene catalog 
 
-
 INDEX FILE INPUTS: (respectively): 
 
 ```out.prodigal/non_redundant_PROGAP_protein_to_pCDS.fna, out.metaeuk/non_redundant_EUKGAP_protein_to_pCDS.fna, out.tiara/out.prodigal/non_redundant_preclass_prokGAP_protein_to_pCDS.fna, out.tiara/out.metaeuk/non_redundant_preclass_prokGAP_protein_to_pCDS.fna```
 
-Run : ```step5_abundance_salmon.sl```
+Run : ```step5.1_salmon_index.sl```
 
-Description : The paired and merged gene counts were aggregated for each sample. 
+Description : Firstly, the gene catalog will be created. 
 
-Description : First, sum up all merged and read counts using the python script for each pipeline.
+Run : ```step5.2_abundance_salmon.sl```
 
-Run : ```python3 python_script/sum_up_qc_merge_paired.py```
+Description : Quality checked reads will map to the gene catalog, respectively. 
+
+Run : ```step5.3_salmon_merge.sl```
+
+Description : Summing up all merged and read counts using the python script. In that script, there is python_script/sum_up_qc_merge_paired.py which should be in the working directory.
 
 After running the batch and python script, we merge the output from the samples, considering only the 'numreads'  and 'len' column in the outputs instead of TPM (transcripts per million).
 
-Run : ```salmon quantmerge --quants directory_of_salmon_output -c numreads -o prokGAP_all_lake_lama_gene_quant.raw.count.qf```
-
-Run : ```salmon quantmerge --quants directory_of_salmon_output -c len -o prokGAP_all_lake_lama_gene_quant.raw.count.len```
-
-Description : Fix the 'all_lake_lama_gene_quant.raw.count.qf' and 'prokGAP_all_lake_lama_gene_quant.raw.count.len'
+Description : Run python_scripts/fix_merge_len.py to fix the 'ProkGAP_all_lake_lama_gene_quant.raw.count.qf' and 'ProkGAP_all_lake_lama_gene_quant.raw.count.len'
 
 Run : ```python_scripts/fix_merge_len.py```
 
