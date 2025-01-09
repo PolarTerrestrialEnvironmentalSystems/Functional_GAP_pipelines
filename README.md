@@ -280,13 +280,13 @@ Bash command: ```seqtk subseq out.eggnog/non_redundant_PROKGAP_protein.faa eggNO
 
 Description : Protein sequences with KEGG Orthologs (KO) annotations were extracted from the EggNOG outputs and proteins associated with multiple KO identifiers to reduce ambiguous annotations were discarded using an R script. 
 
-eukgap_input: ```out.eggnog/non_redundant_EUKGAP_protein_eggNOG.emapper.annotations, eukGAP_all_lake_lama_gene_quant.CPM.fixed.tsv```
+eukgap_input: ```out.eggnog/non_redundant_EUKGAP_protein_eggNOG.emapper.annotations, eukGAP_all_lake_lama_gene_quant.CPM.fixed.tsv, metadata.tsv```
 
-prokgap_input: ```out.eggnog/non_redundant_PROKGAP_protein_eggNOG.emapper.annotations,prokGAP_all_lake_lama_gene_quant.CPM.fixed.tsv ```
+prokgap_input: ```out.eggnog/non_redundant_PROKGAP_protein_eggNOG.emapper.annotations,prokGAP_all_lake_lama_gene_quant.CPM.fixed.tsv, metadata.tsv ```
 
-preclass_eukgap_input: ```out.eggnog/non_redundant_preclass_prokGAP_protein_eggNOG.emapper.annotations,preclass_eukGAP_all_lake_lama_gene_quant.CPM.fixed.tsv```
+preclass_eukgap_input: ```out.eggnog/non_redundant_preclass_prokGAP_protein_eggNOG.emapper.annotations,preclass_eukGAP_all_lake_lama_gene_quant.CPM.fixed.tsv, metadata.tsv```
 
-preclass_prokgap_Input: ```out.eggnog/non_redundant_preclass_eukGAP_protein_eggNOG.emapper.annotations,preclass_prokGAP_all_lake_lama_gene_quant.CPM.fixed.tsv```
+preclass_prokgap_Input: ```out.eggnog/non_redundant_preclass_eukGAP_protein_eggNOG.emapper.annotations,preclass_prokGAP_all_lake_lama_gene_quant.CPM.fixed.tsv, metadata.tsv```
 
 Run: ```R_scripts/kegg_diversity.R```
 
