@@ -234,11 +234,11 @@ After running the batch and python script, we merge the output from the samples,
 
 Run : ```step5.3_salmon_merge.sl```
 
-Description : Run python_scripts/fix_merge_len.py to fix the 'ProkGAP_all_lake_lama_gene_quant.raw.count.qf' and 'ProkGAP_all_lake_lama_gene_quant.raw.count.len'
+Description : Run python_scripts/fix_merge_len.py to fix the 'ProkGAP_all_lake_lama_gene_quant.raw.count.qf' and 'ProkGAP_all_lake_lama_gene_quant.raw.count.len'. Note that fix_merge_len.py script should move to the out.salmon_merged_paired directory and run it.
 
 Run : ```python_scripts/fix_merge_len.py```
 
-Description : To calculate the normalized gene count (NGC) over samples using raw counts, we used custom python script.
+Description : To calculate the normalized gene count (NGC) over samples using raw counts, we used custom python script. Note that ngs_calculation.py script should move to the out.salmon_merged_paired directory and run it.
 
 Input : ```prokGAP_all_lake_lama_gene_quant.raw.count.len```
 
