@@ -150,12 +150,11 @@ ko_abund <- final_df_eukaryote_paths %>%
         summarise(SUM_TPM = sum(TPM_value))
 
 
-ko_abund_rel <- ko_abund %>%
-        group_by(Ages) %>%
-        mutate(rel_abund_fam = (SUM_TPM / sum(SUM_TPM))*100)
+#ko_abund_rel <- ko_abund %>%
+#        group_by(Ages) %>%
+#        mutate(rel_abund_fam = (SUM_TPM / sum(SUM_TPM))*100)
 
 write.csv(ko_abund, file = paste0(output_file, ".csv"))
-
 
 }
 
