@@ -202,7 +202,7 @@ Run : ```step4_cd_hit.sl```
 
 Description: In the CD-HIT output, we extract gene IDs from the non-redundant gene catalog. These IDs are used to extract proteins with the same IDs from redundant_protein.fas.
 
-OUTPUT (respectivel):  
+OUTPUT (respectively):  
 
 ```out.metaeuk/non_redundant_EUKGAP_protein.faa, out.prodigal/non_redundant_PROKGAP_protein.faa, out.tiara/out.prodigal/non_redundant_preclass_prokGAP_protein.faa, out.tiara/out.metaeuk/non_redundant_preclass_eukGAP_protein.faa```
 
