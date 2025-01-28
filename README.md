@@ -350,11 +350,13 @@ Description: Here we assess aDNA contigs in our assemblies using PyDamage. This 
 
 Input : ```out.megahit/[sample_name].final.contigs.fa```
 
-Run : ```aDNA_pydamage_assessment.sl```
+Run : ```step8_aDNA_pydamage_assessment.sl```
 
-Output : ```$sample_name.pydamage_result.csv ```
+Output1 : ```out.pydamage/${sample_name}_name_added_pydamage_result.csv```
 
-To bring it all together, ```cat *_pydamage_result.csv > all_samples_pydamage_result.csv ```
+Output2 : ```out.megahit/${sample_name}_conf0_contig_added_sample_name.kraken```
 
-Visualization : ```R_script/pydamage_workflow_v1.R```
+To bring it all together, ```cat *_pydamage_result.csv > all_pydamage.csv ``` and ```cat *_conf0_contig_added_sample_name.kraken > all_kraken_report.kraken ```
+
+Data mining & visualization : ```R_script/pydamage_workflow_v1.R```
 
