@@ -10,7 +10,7 @@ library("data.table")
 
 setwd("")
 
-analyze_kegg_diversity <- function(eggnog_file, gene_abundance_file, output_file) {
+analyze_kegg_diversity <- function(eggnog_file, gene_abundance_file, metadata,output_file) {
 
 #eggnog input file
 eggnog_input <- fread(eggnog_file)
@@ -19,9 +19,19 @@ eggnog_input <- fread(eggnog_file)
 quant_merge <- fread(gene_abundance_file, header = TRUE)
 colnames(quant_merge)[1] <- "gene_id"
   
-colnames(quant_merge) <- c("gene_id",18715,17948,6400,9190,11536,13746,22982,21753,20630,19593,3023,16946,76,724,1858,4381,5168,15599,14669,7562,6890,8513,20059,22518,264,1212,2504,17222,19192,21068,9816,12992,10428,11791,14020,14315,15123,16084,10091,13930,16541,13588,"gene_length")
+#colnames(quant_merge) <- c("gene_id",18715,17948,6400,9190,11536,13746,22982,21753,20630,19593,3023,16946,76,724,1858,4381,5168,15599,14669,7562,6890,8513,20059,22518,264,1212,2504,17222,19192,21068,9816,12992,10428,11791,14020,14315,15123,16084,10091,13930,16541,13588,"gene_length")
 quant_merge$gene_length <- NULL
 
+  metadata <- fread(metadata)
+  rename_map <- setNames(metadata$Age, metadata$Name)
+  colnames(quant_merge) <- ifelse(colnames(quant_merge) %in% names(rename_map), rename_map[colnames(quant_merge)], colnames(quant_merge))
+  
+  age_columns <- intersect(colnames(quant_merge), rename_map)
+  age_columns <- age_columns[order(as.numeric(age_columns))]
+  
+  #change the col name of egnnog
+  colnames(eggnog_input)[1] <- "gene_id"
+  quant_merge$gene_length <- NULL
 
 #change the col name of egnnog
 colnames(eggnog_input)[1] <- "gene_id"
@@ -29,16 +39,25 @@ colnames(eggnog_input)[1] <- "gene_id"
 quant_eggnog_merge <- merge(eggnog_input,quant_merge, by="gene_id",all=T)
 quant_eggnog_merge_2 <-quant_eggnog_merge[-which(is.na(quant_eggnog_merge$eggNOG_OGs)),]
 
+
+#quant_eggnog_merge_long <- quant_eggnog_merge_2 %>%
+#  pivot_longer(
+#    cols = `18715`:`13588`,
+#    names_to = "Ages",
+#    values_to = "TPM_value"
+#)
+
 quant_eggnog_merge_long <- quant_eggnog_merge_2 %>%
-  pivot_longer(
-    cols = `18715`:`13588`,
-    names_to = "Ages",
-    values_to = "TPM_value"
+    pivot_longer(
+      cols = all_of(age_columns),
+      names_to = "Ages",
+      values_to = "count"
 )
+  
 
 ko_abund <- quant_eggnog_merge_long %>%
    group_by(Ages) %>%
-   summarise(SUM_CPM=sum(TPM_value))
+   summarise(SUM_CPM=sum(count))
 
 write.csv(ko_abund, file = paste0(output_file, "_eggnog_annotation.csv"))
 
@@ -49,17 +68,22 @@ quant_eggnog_merge_2 <-quant_eggnog_merge[-which(is.na(quant_eggnog_merge$eggNOG
 quant_eggnog_merge_3 = quant_eggnog_merge_2[grepl("Eukaryota", quant_eggnog_merge_2$eggNOG_OGs),]
 
 
+#quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
+#  pivot_longer(
+#    cols = `18715`:`13588`,
+#    names_to = "Ages",
+#    values_to = "TPM_value"
+#)
 quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
-  pivot_longer(
-    cols = `18715`:`13588`,
-    names_to = "Ages",
-    values_to = "TPM_value"
+    pivot_longer(
+      cols = all_of(age_columns),
+      names_to = "Ages",
+      values_to = "count"
 )
-
 
 ko_abund <- quant_eggnog_merge_long %>%
    group_by(Ages) %>%
-   summarise(SUM_CPM=sum(TPM_value))
+   summarise(SUM_CPM=sum(count))
 
 write.csv(ko_abund, file = paste0(output_file, "_eukaryota_annotation.csv"))
 
@@ -85,16 +109,22 @@ write.table(data.frame(Gene_number_KO_assignment = gene_number_ko, Uniq_KO_assig
 which(is.na(quant_eggnog_merge_4$KEGG_ko))
 
 #wide to long format
-quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
-  pivot_longer(
-    cols = `18715`:`13588`,
-    names_to = "Ages",
-    values_to = "TPM_value"
+#quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
+#  pivot_longer(
+#    cols = `18715`:`13588`,
+#    names_to = "Ages",
+#    values_to = "TPM_value"
+#)
+quant_eggnog_merge_long <- quant_eggnog_merge_4 %>%
+    pivot_longer(
+      cols = all_of(age_columns),
+      names_to = "Ages",
+      values_to = "count"
 )
 
 ko_abund <- quant_eggnog_merge_long %>%
    group_by(Ages,KEGG_ko) %>%
-   summarise(SUM_CPM=sum(TPM_value))
+   summarise(SUM_CPM=sum(count))
 
 write.csv(ko_abund, file = paste0(output_file, "_eukaryotes_KOs_abundance.csv"))
 
@@ -103,16 +133,23 @@ write.csv(ko_abund, file = paste0(output_file, "_eukaryotes_KOs_abundance.csv"))
 # keep eukaryotes or prokaryotes
 quant_eggnog_merge_3 = quant_eggnog_merge_2[!grepl("Eukaryota", quant_eggnog_merge_2$eggNOG_OGs),]
 
+#quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
+#  pivot_longer(
+#    cols = `18715`:`13588`,
+#    names_to = "Ages",
+#    values_to = "TPM_value"
+#)
+
 quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
-  pivot_longer(
-    cols = `18715`:`13588`,
-    names_to = "Ages",
-    values_to = "TPM_value"
+    pivot_longer(
+      cols = all_of(age_columns),
+      names_to = "Ages",
+      values_to = "count"
 )
 
 ko_abund <- quant_eggnog_merge_long %>%
    group_by(Ages) %>%
-   summarise(SUM_CPM=sum(TPM_value))
+   summarise(SUM_CPM=sum(count))
 
 write.csv(ko_abund, file = paste0(output_file, "_prokaryota_annotation.csv"))
 
@@ -137,28 +174,27 @@ write.table(data.frame(Gene_number_KO_assignment = gene_number_ko, Uniq_KO_assig
 which(is.na(quant_eggnog_merge_4$KEGG_ko))
 
 #wide to long format
-quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
-  pivot_longer(
-    cols = `18715`:`13588`,
-    names_to = "Ages",
-    values_to = "TPM_value"
+#quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
+#  pivot_longer(
+#    cols = `18715`:`13588`,
+#    names_to = "Ages",
+#    values_to = "TPM_value"
+#)
+# this will get only KOs abundance
+quant_eggnog_merge_long <- quant_eggnog_merge_4 %>%
+    pivot_longer(
+      cols = all_of(age_columns),
+      names_to = "Ages",
+      values_to = "count"
 )
 
-# ALL gene
-all_quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
-quant_eggnog_merge_long <- quant_eggnog_merge_3 %>%
-  pivot_longer(
-    cols = `18715`:`13588`,
-    names_to = "Ages",
-    values_to = "TPM_value"
-)
 
-#ROW_KO_COUNTS
-write.csv(quant_eggnog_merge_long, file = paste0(output_file, ".csv"))
+#ROW_KO_COUNTS, produce huge file, dont run.
+#write.csv(quant_eggnog_merge_long, file = paste0(output_file, ".csv"))
 
 ko_abund <- quant_eggnog_merge_long %>%
    group_by(Ages,KEGG_ko) %>%
-   summarise(SUM_CPM=sum(TPM_value))
+   summarise(SUM_CPM=sum(count))
 
 write.csv(ko_abund, file = paste0(output_file, "_prokaryotes_KOs_abundance.csv"))
 }
@@ -167,21 +203,21 @@ write.csv(ko_abund, file = paste0(output_file, "_prokaryotes_KOs_abundance.csv")
 # Normalized
 # PROKGAP
 prokgap <- analyze_kegg_diversity("non_redundant_PROKGAP_protein_eggNOG.emapper.annotations",
-                       "prokGAP_all_lake_lama_gene_quant.CPM.6m.fixed.tsv",
+                       "prokGAP_all_lake_lama_gene_quant.CPM.6m.fixed.tsv","metadata.tsv",
                        "prokgap_6m_CPM_eggnog_abundance")
 # EUKGAP
 eukgap <- analyze_kegg_diversity("non_redundant_EUKGAP_protein_eggNOG.emapper.annotations",
-                       "eukGAP_all_lake_lama_gene_quant.CPM.6m.fixed.tsv",
+                       "eukGAP_all_lake_lama_gene_quant.CPM.6m.fixed.tsv","metadata.tsv",
                        "eukgap_6m_CPM_eggnog_abundance")
 
 # PRECLASS_PROKGAP
 preclass_euk <- analyze_kegg_diversity("non_redundant_preclass_prokGAP_protein_eggNOG.emapper.annotations",
-                       "preclass_prokGAP_all_lake_lama_gene_quant.CPM.6m.fixed.tsv",
+                       "preclass_prokGAP_all_lake_lama_gene_quant.CPM.6m.fixed.tsv","metadata.tsv",
                        "preclass_prokgap_6m_CPM_eggnog_abundance")
 
 # PRECLASS_EUKGAP
 preclass_prok <- analyze_kegg_diversity("non_redundant_preclass_eukGAP_protein_eggNOG.emapper.annotations",
-                       "preclass_eukGAP_all_lake_lama_gene_quant.CPM.6m.fixed.tsv",
+                       "preclass_eukGAP_all_lake_lama_gene_quant.CPM.6m.fixed.tsv","metadata.tsv",
                        "preclass_eukgap_6m_CPM_eggnog_abundance")
 
 
@@ -189,19 +225,19 @@ preclass_prok <- analyze_kegg_diversity("non_redundant_preclass_eukGAP_protein_e
 
 # PROKGAP
 prokgap <- analyze_kegg_diversity("non_redundant_PROKGAP_protein_eggNOG.emapper.annotations",
-                       "prokGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv",
+                       "prokGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv","metadata.tsv",
                        "prokgap_raw_count_eggnog_abundance")
  EUKGAP
 eukgap <- analyze_kegg_diversity("non_redundant_EUKGAP_protein_eggNOG.emapper.annotations",
-                       "eukGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv",
+                       "eukGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv","metadata.tsv",
                        "eukgap_raw_count_eggnog_abundance")
 
  PRECLASS_PROKGAP
 preclass_euk <- analyze_kegg_diversity("non_redundant_preclass_prokGAP_protein_eggNOG.emapper.annotations",
-                       "preclass_prokGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv",
+                       "preclass_prokGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv","metadata.tsv",
                        "preclass_prokgap_raw_count_eggnog_abundance")
 
  PRECLASS_EUKGAP
 preclass_prok <- analyze_kegg_diversity("non_redundant_preclass_eukGAP_protein_eggNOG.emapper.annotations",
-                       "preclass_eukGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv",
+                       "preclass_eukGAP_all_lake_lama_gene_quant.raw_count.fixed.tsv","metadata.tsv",
                        "preclass_eukgap_raw_count_eggnog_abundance")
