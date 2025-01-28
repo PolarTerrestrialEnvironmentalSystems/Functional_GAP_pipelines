@@ -20,11 +20,12 @@ preclass_eukgap <- read.csv("plant_family_preclass_eukgap_raw_count.csv")
 preclass_eukgap$approach <- "Pre-class EukGAP"
 preclass_eukgap$X <- NULL
 
+# needs to be generated from kraken taxonomy.
 kraken <- read.table("kraken_family_abundance.tsv")
 kraken$approach <- "Kraken"
 
 # Rename columns
-colnames(kraken) <- c("family", "Ages", "SUM_TPM", "rel_abund_family", "approach")
+colnames(kraken) <- c("family", "Ages", "SUM_COUNT", "rel_abund_family", "approach")
 
 # Combine the data frames
 combined_data <- rbind(prokgap,eukgap,preclass_prokgap,preclass_eukgap,kraken)
@@ -35,10 +36,11 @@ selected_taxa <- c("Rosaceae", "Ranunculaceae", "Poaceae", "Pinaceae", "Salicace
 
 tax_abund <- combined_data %>%
   group_by(Ages,family,approach) %>%
-  summarise(SUM_TPM = sum(SUM_TPM))
+  summarise(SUM_COUNT = sum(SUM_COUNT))
+
 tax_abund_rel <- tax_abund %>%
   group_by(Ages,approach) %>%
-  mutate(rel_abund_fam = (SUM_TPM / sum(SUM_TPM))*100)
+  mutate(rel_abund_fam = (SUM_COUNT / sum(SUM_COUNT))*100)
 
 tax_abund_rel$rel_abund_fam <- as.numeric(tax_abund_rel$rel_abund_fam)
 tax_abund_rel$family <- factor(tax_abund_rel$family, levels = unique(tax_abund_rel$family))
@@ -68,12 +70,10 @@ tax_abund_wide <- reshape2::dcast(new_df, Ages ~ family + approach, value.var = 
 # Replace NA values with 0
 tax_abund_wide[is.na(tax_abund_wide)] <- 0
 
-
 colnames(tax_abund_wide) <- gsub("_", " ", colnames(tax_abund_wide))
 
 
 correlation_matrix <- cor(tax_abund_wide[, -1], method ="spearman")  # Excluding the first column (Ages)
-
 
 # p-values for correlations
 cor_pmat <- cor.mtest(tax_abund_wide[, -1])$p  # Excluding the first column (Ages)
