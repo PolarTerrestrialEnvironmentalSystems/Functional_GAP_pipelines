@@ -288,15 +288,15 @@ preclass_eukgap_input: ```out.eggnog/non_redundant_preclass_prokGAP_protein_eggN
 
 preclass_prokgap_Input: ```out.eggnog/non_redundant_preclass_eukGAP_protein_eggNOG.emapper.annotations,preclass_prokGAP_all_lake_lama_gene_quant.CPM.fixed.tsv, metadata.tsv```
 
-Run: ```R_scripts/kegg_diversity.R```
+KEGG reference files (required): ```kegg_ko_to_map.txt, kegg_pathway_mod_draft.tsv, ko_numbers_reference_list.tsv```
+
+Run: ```R_scripts/KOs_to_pathway.R```
 
 Output : ```prokGAP_final_df_row_counts_lama.csv,eukGAP_final_df_row_KO_counts_lama.csv ,preclass_eukGAP_final_df_row_KO_counts_lama.csv, preclass_prokGAP_final_df_row_KO_counts_lama.csv, observed_count.png```
 
 Description: For KEGG pathway analysis, there is another script and files are needed. Inputs are the same.
 
 KEGG reference files: ```kegg_ko_to_map.txt, kegg_pathway_mod_draft.tsv, ko_numbers_reference_list.tsv```
-
-Run: ```R_scripts/KOs_to_pathway.R```
 
 KEGG Photosynthesis pathwway visualization:
 
