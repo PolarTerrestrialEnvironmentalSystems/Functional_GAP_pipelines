@@ -48,6 +48,15 @@ colnames(pydamage) <- fixed_colname
 # these rows should be discarded
 pydamage <- pydamage[pydamage$sample_name != "sample_name", ]
 
+# Here add the ages to new column. We need metadata.tsv that you can use always same metadata
+metadata <- fread("metadata.tsv", header = T)
+
+# but column name needs to be changed.
+colnames(metadata)[1] <- "sample_name"
+
+# and merge
+pydamage=merge(pydamage, metadata, by = "sample_name", all.x=T)
+
 # check the file
 dim(pydamage)
 
@@ -57,6 +66,9 @@ kraken <- read.csv("all_kraken_report.kraken", sep="\t", header = F)
 dim(kraken)
 # fix the colnames to merge
 colnames(kraken) <- c("sample_name", "rank","contig_id","taxid")
+
+# lets add age to the kraken as well.
+kraken=merge(kraken, metadata, by = "sample_name", all.x=T)
 
 unique(kraken$sample_name)
 
