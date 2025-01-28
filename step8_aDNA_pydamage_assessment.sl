@@ -111,6 +111,6 @@ else
     echo "${SAMPLE_ID} already exists on your filesystem [check "ref" directory]"
 fi
 echo ""
-module unload kraken2/2.1.3
+module unload kraken2
 else
     echo "Skipping KRAKEN ANALYSIS."
