@@ -47,7 +47,7 @@ srun bwa index ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}/final.contigs.fa
 
 # BWA-mapping to get coverage
 srun bwa mem ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}/${REF} ${WORK}/${OUTDIR}/${OUT_TADPOLE}/${SAMPLE_ID}_tadpole_ecc_fastp_merged_R2.fq.gz > ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_merged.sam
-srun bwa mem ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}/${REF} ${WORK}/${OUTDIR}/${OUT_TADPOLE}/${SAMPLE_ID}_tadpole_ecc_fastp_R1.fq.gz ${OUT_TADPOLE}/${SAMPLE_ID}_tadpole_ecc_fastp_R2.fq.gz > ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_paired.sam
+srun bwa mem ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}/${REF} ${WORK}/${OUTDIR}/${OUT_TADPOLE}/${SAMPLE_ID}_tadpole_ecc_fastp_R1.fq.gz ${WORK}/${OUTDIR}/${OUT_TADPOLE}/${SAMPLE_ID}_tadpole_ecc_fastp_R2.fq.gz > ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_paired.sam
 
 srun samtools sort ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_merged.sam -o ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_merged.sorted.bam
 srun samtools sort ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_paired.sam -o ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_paired.sorted.bam
