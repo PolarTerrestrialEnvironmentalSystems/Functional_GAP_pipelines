@@ -1,10 +1,11 @@
+#=============================================================================#
+# R-script 
+# author: Ugur Cabuk
+# Description: Resampling for raw gene count (abundance)
+#=============================================================================#
 library(iNEXT)
 library(reshape2)
-library("plyr")
-library("dplyr")
-library("tidyverse")
 library("readr")
-library("tidyr")
 
 # Function to process and analyze abundance data
 process_and_analyze <- function(file_path, datatype = "abundance", knots = 3) {
