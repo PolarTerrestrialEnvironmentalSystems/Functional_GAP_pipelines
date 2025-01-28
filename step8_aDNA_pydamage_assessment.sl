@@ -104,10 +104,11 @@ if [ "${RUN_KRAKEN}" = "YES" ]; then
 module load kraken2
   if [[ ! -f ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${ID}_conf${CONFIDENCE}_contig.kraken ]]
 then
-    srun kraken2 --confidence ${CONFIDENCE} --db ${DB} ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${ID}/final.contigs.fa --threads ${CPU} --output ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${ID}_conf${CONFIDENCE}_contig.kraken \\
-    --report ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${ID}_conf${CONFIDENCE}_contig.kraken.report
+    srun kraken2 --confidence ${CONFIDENCE} --db ${DB} ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}/final.contigs.fa --threads ${CPU} --output ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}_conf${CONFIDENCE}_contig.kraken \\
+    --report ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}_conf${CONFIDENCE}_contig.kraken.report
+    awk -v sample="$SAMPLE_ID" '{print sample, $0}' OFS="\t" } ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}_conf${CONFIDENCE}_contig.kraken | cut -f1-4 > ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}_conf${CONFIDENCE}_contig_added_sample_name.kraken
 else
-    echo "${ID} already exists on your filesystem [check "ref" directory]"
+    echo "${SAMPLE_ID} already exists on your filesystem [check "ref" directory]"
 fi
 echo ""
 module unload kraken2/2.1.3
