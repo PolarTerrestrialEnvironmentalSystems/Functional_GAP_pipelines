@@ -36,7 +36,7 @@ cd ${WORK}
 CPU=${SLURM_CPUS_PER_TASK}
 
 if [ "${RUN_BWA}" = "YES" ]; then
-# Here If statement has to be written.
+# Here If statement has to be written, later!.
 #MODULES
 module load bwa
 module load samtools
@@ -78,7 +78,7 @@ if [ "${RUN_PYDAMAGE}" = "YES" ]; then
 
 srun pydamage --outdir ${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID} analyze ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}.merge_paired.sorted.bam -p ${CPU}
 
-awk -F, -v OFS=, -v prefix="$SAMPLE_ID" 'NR==1{print; next} {print prefix "," $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35, $36}' "${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID}/pydamage_result.csv" > ${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID}_name_added_pydamage_result.csv
+awk -F, -v OFS=, -v prefix="$SAMPLE_ID" 'NR==1{print "sample_name," $0; next} {print prefix, $0}' "${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID}/pydamage_results.csv" > ${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID}_name_added_pydamage_result.csv
 
 # no need to do it.
 # mv ${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID}/pydamage_result.csv ${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID}_pydamage_result.csv
