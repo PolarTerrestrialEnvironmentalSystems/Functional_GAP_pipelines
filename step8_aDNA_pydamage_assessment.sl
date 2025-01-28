@@ -38,10 +38,10 @@ CPU=${SLURM_CPUS_PER_TASK}
 if [ "${RUN_BWA}" = "YES" ]; then
 # Here If statement has to be written.
 #MODULES
-module load bwa/0.7.18
-module load samtools/1.20
-module load bamtools/2.5.2
-module load pydamage/0.80
+module load bwa
+module load samtools
+module load bamtools
+module load pydamage
 
 srun bwa index ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}/final.contigs.fa
 
