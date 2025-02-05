@@ -63,7 +63,7 @@ Run: ```mmseqs databases NR NR_ncbi tmp_nr```
 
 Description : Initially, the quality of reads before and after processing was evaluated using FastQC (v0.11.9). Subsequently, fastp (v0.20.1) was utilized to remove low-quality reads, adapter sequences, and merge paired-end reads. The removal of PCR duplicates from the shotgun sequence data was performed using clumpify from BBtools (v38.87).
 
-Input File: Raw data from the data source, "Barbara's upload link"
+Input File: Raw data from the data source, "ENA accession number: "
 
 Run   : ```step1_preprocessing.sl```
 
