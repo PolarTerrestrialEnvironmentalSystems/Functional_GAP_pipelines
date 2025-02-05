@@ -14,8 +14,12 @@ OUT_TIARA="out.tiara"
 OUT_SALMON="out.salmon"
 OUT_SALMON_MERGED="out.salmon_merged_paired"
 
+if [[-f ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${ID}_conf${CONFIDENCE}_contig.kraken ]]
+then
 rm -r ${OUTDIR}/${OUT_SALMON_MERGED}/${OUTDIR}_all_raw_quant.sf
 rm -r ${OUTDIR}/${OUT_SALMON_MERGED}/${OUTDIR}_gene_quant.raw.count.len
+else
+ echo "${OUTDIR}/${OUT_SALMON_MERGED}/${OUTDIR}_all_raw_quant.sf and ${OUTDIR}/${OUT_SALMON_MERGED}/${OUTDIR}_gene_quant.raw.count.len are not found"
 
 srun python3 ${WORK}/sum_up_qc_merged_paired.py ${OUTDIR}/${OUT_SALMON} ${OUTDIR}/${OUT_SALMON_MERGED}
 
