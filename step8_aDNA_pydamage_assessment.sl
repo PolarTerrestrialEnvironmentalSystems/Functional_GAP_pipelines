@@ -35,13 +35,15 @@ cd ${WORK}
 # This parameter for HPC, otherwise remove it here and also from kraken and pydamage parameter.
 CPU=${SLURM_CPUS_PER_TASK}
 
-if [ "${RUN_BWA}" = "YES" ]; then
-# Here If statement has to be written, later!.
 #MODULES
 module load bwa
 module load samtools
 module load bamtools
 module load pydamage
+module load kraken2
+
+if [ "${RUN_BWA}" = "YES" ]; then
+# Here If statement has to be written, later!.
 
 srun bwa index ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}/final.contigs.fa
 
@@ -57,7 +59,6 @@ rm -rf ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_merged.sam
 rm -rf ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_paired.sam
 
 # Combine merge and paired bam files.
-
 srun bamtools merge -in ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_merged.sorted.bam -in ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}_out_paired.sorted.bam -out ${WORK}/${OUTDIR}/${OUT_BWA}/${SAMPLE_ID}.merge_paired.bam
 
 # Remove temporary files
@@ -83,11 +84,6 @@ awk -F, -v OFS=, -v prefix="$SAMPLE_ID" 'NR==1{print "sample_name," $0; next} {p
 # no need to do it.
 # mv ${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID}/pydamage_result.csv ${WORK}/${OUTDIR}/${OUT_PYDAMAGE}/${SAMPLE_ID}_pydamage_result.csv
 
-module unload bwa
-module unload samtools
-module unload bamtools
-module unload pydamage
-
 else
 echo "Skipping DAMAGE PATTERN ANALYSIS."
 fi
@@ -95,13 +91,12 @@ fi
 # KRAKEN FOR ASSEMBLIES
 
 # NT database or custom database
-DB="set-pathway-to-database"
+DB="set-path-to-the-database"
 
 # please do not change the level, otherwise, you will get nothing.
 CONFIDENCE="0"
 
 if [ "${RUN_KRAKEN}" = "YES" ]; then
-module load kraken2
   if [[ ! -f ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${ID}_conf${CONFIDENCE}_contig.kraken ]]
 then
     srun kraken2 --confidence ${CONFIDENCE} --db ${DB} ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}/final.contigs.fa --threads ${CPU} --output ${WORK}/${OUTDIR}/${OUT_MEGAHIT}/${SAMPLE_ID}_conf${CONFIDENCE}_contig.kraken \\
@@ -111,6 +106,12 @@ else
     echo "${SAMPLE_ID} already exists on your filesystem [check "ref" directory]"
 fi
 echo ""
-module unload kraken2
 else
     echo "Skipping KRAKEN ANALYSIS."
+
+module unload bwa
+module unload samtools
+module unload bamtools
+module unload pydamage
+module unload kraken2
+
