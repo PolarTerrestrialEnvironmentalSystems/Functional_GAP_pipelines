@@ -14,7 +14,7 @@
 ![gap_pipeline_final_v2](https://github.com/ucabuk/functional_eukaryotes_lama/assets/36818676/f1d1e887-cd32-450b-bf43-d1749af70ee0)
 
 
-This repository includes bioinfornatic scripts for benchmarking gene annoation pipelines for sedimentary ancient DNA shotgun data. Description of the data analysis provided in this repository and the results of benchmarking gene annottaion pipelines are published in Cabuk et al. XXXX. The bioinformatic computations were done on HPC (High Performance Clustering).
+This repository includes bioinfornatic scripts for benchmarking gene annoation pipelines for sedimentary ancient DNA shotgun data. Description of the data analysis provided in this repository and the results of benchmarking gene annottaion pipelines are published in Çabuk et al. 2025. The bioinformatic computations were done on HPC (High Performance Clustering).
 
 A few helping scripts were used to perform data manipulation in between the main bioinformatic scripts, such  helper scripts are provided below.
 
